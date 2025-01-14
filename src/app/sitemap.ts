@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase'
 import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://roadmap.nepoex.com'
+
   // Blog yazılarını getir
   const { data: posts } = await supabase
     .from('blog_posts')
@@ -9,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .eq('status', 'published')
 
   const blogUrls = posts?.map((post) => ({
-    url: `https://your-domain.com/blog/${post.slug}`,
+    url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.published_at,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
@@ -21,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/blog',
     '/hakkimda',
   ].map((route) => ({
-    url: `https://your-domain.com${route}`,
+    url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString(),
     changeFrequency: 'daily' as const,
     priority: 1,
