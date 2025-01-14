@@ -123,12 +123,7 @@ export default function Header() {
               </div>
             ) : (
               <button
-                onClick={() => supabase.auth.signInWithOAuth({
-                  provider: 'github',
-                  options: {
-                    redirectTo: `${window.location.origin}/auth/callback`
-                  }
-                })}
+                onClick={() => router.push('/giris')}
                 className="flex items-center gap-2 px-4 py-2 bg-purple-500/10 text-purple-400 rounded-full hover:bg-purple-500/20 transition-colors"
               >
                 <CgProfile className="w-5 h-5" />
