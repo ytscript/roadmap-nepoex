@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabase'
 import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://roadmap.nepoex.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://roadmap-nepoex-git-main-ytscripts-projects-49f3f3ac.vercel.app'
 
   // Blog yazılarını getir
   const { data: posts } = await supabase
