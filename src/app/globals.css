@@ -213,18 +213,23 @@ body {
   animation: twinkle 3s ease-in-out infinite;
 }
 
-/* Normal cursor'u sadece ana sayfada gizle */
-.home-page {
+/* Tüm sayfada cursor'u gizle */
+* {
   cursor: none !important;
 }
 
+/* Sihirli çubuk stilleri */
 .star {
+  display: block;
   transform-style: preserve-3d;
-  width: 1px;
-  height: 1px;
+  width: 24px;
+  height: 24px;
   position: absolute;
   pointer-events: none;
   z-index: 9999;
+  transition: color 0.3s ease;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .star:before {
@@ -233,6 +238,17 @@ body {
   color: inherit;
   inset: 0;
   text-shadow: 0 0 0.8em rgba(255, 255, 255, 0.3);
+}
+
+/* Tıklanabilir elementler üzerine gelindiğinde sihirli çubuğun rengini değiştir */
+a:hover ~ .star,
+button:hover ~ .star,
+[role="button"]:hover ~ .star,
+input[type="submit"]:hover ~ .star,
+input[type="button"]:hover ~ .star,
+.clickable:hover ~ .star {
+  color: #ef4444 !important; /* Kırmızı renk */
+  filter: drop-shadow(0 0 10px #ef4444);
 }
 
 /* JetBrains Mono font */
@@ -478,3 +494,9 @@ body {
 .light15 { animation-duration: 57s; }
 .light16 { animation-duration: 60s; }
 .light17 { animation-duration: 63s; }
+
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(128, 128, 128, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(128, 128, 128, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}

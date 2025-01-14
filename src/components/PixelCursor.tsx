@@ -48,7 +48,7 @@ export default function PixelCursor() {
     <div
       ref={cursorRef}
       className="fixed pointer-events-none z-50 will-change-transform"
-      style={{ transform: 'translate3d(0, 0, 0)' }}
+      style={{ transform: 'translate3d(0, 0, 0)', zIndex: 9999 }}
     >
       <div className="relative w-8 h-8">
         {/* Ana Asa Resmi */}

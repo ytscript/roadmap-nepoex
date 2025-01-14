@@ -110,14 +110,6 @@ export default function Header() {
                         <CgProfile className="w-5 h-5" />
                         <span>Profilim</span>
                       </Link>
-                      <Link
-                        href="/roadmap"
-                        className="flex items-center gap-2 px-4 py-3 text-gray-300 hover:bg-purple-500/20 transition-colors"
-                        onClick={() => setIsDropdownOpen(false)}
-                      >
-                        <FiBookOpen className="w-5 h-5" />
-                        <span>Roadmap</span>
-                      </Link>
                       <button
                         onClick={handleSignOut}
                         className="w-full flex items-center gap-2 px-4 py-3 text-gray-300 hover:bg-purple-500/20 transition-colors"

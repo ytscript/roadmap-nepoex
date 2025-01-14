@@ -29,7 +29,7 @@ export default function StarTrail() {
       const star = document.createElement('div')
       star.innerHTML = '★' // veya '⭐' veya '✦'
       star.className = 'star'
-      star.style.top = `${y + rand(-20, 20)}px`
+      star.style.top = `${y + window.pageYOffset + rand(-20, 20)}px`
       star.style.left = `${x}px`
       star.style.color = selRand(COLORS)
       star.style.fontSize = selRand(FONT_SIZES)

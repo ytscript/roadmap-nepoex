@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { FiGithub } from 'react-icons/fi'
+import { FcGoogle } from 'react-icons/fc'
 import { supabase } from '@/lib/supabase'
 import { useUser } from '@/hooks/useUser'
 
@@ -11,12 +11,26 @@ export default function LoginButton() {
   const { user } = useUser()
 
   // GitHub ile giriş yap
-  const handleLogin = async () => {
+  const handleGitHubLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
-        scopes: 'read:user user:email' // GitHub profil bilgilerini okuma izni
+        scopes: 'read:user user:email read:org user:follow'
+      }
+    })
+  }
+
+  // Google ile giriş yap
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent'
+        }
       }
     })
   }
@@ -26,57 +40,6 @@ export default function LoginButton() {
     await supabase.auth.signOut()
     router.refresh()
   }
-
-  // GitHub profil bilgilerini kaydet
-  const syncGitHubProfile = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session?.user) return
-
-      // GitHub metadata'dan bilgileri al
-      const metadata = session.user.user_metadata
-      
-      // Profil var mı kontrol et
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('id', session.user.id)
-        .single()
-
-      if (!existingProfile) {
-        // Yeni profil oluştur
-        await supabase.from('profiles').insert({
-          id: session.user.id,
-          username: metadata.login || metadata.user_name,
-          avatar_url: metadata.avatar_url,
-          full_name: metadata.full_name || metadata.name,
-          bio: metadata.bio || '🧙‍♂️ Henüz büyü kitabımı yazmadım...',
-          github_url: metadata.html_url,
-          location: metadata.location,
-          website_url: metadata.blog || metadata.website,
-        })
-      } else {
-        // Mevcut profili güncelle
-        await supabase.from('profiles').update({
-          username: metadata.login || metadata.user_name,
-          avatar_url: metadata.avatar_url,
-          full_name: metadata.full_name || metadata.name,
-          github_url: metadata.html_url,
-          location: metadata.location,
-          website_url: metadata.blog || metadata.website,
-        }).eq('id', session.user.id)
-      }
-    } catch (error) {
-      console.error('Error syncing GitHub profile:', error)
-    }
-  }
-
-  // Giriş yapıldığında profili senkronize et
-  useEffect(() => {
-    if (user) {
-      syncGitHubProfile()
-    }
-  }, [user])
 
   if (user) {
     return (
@@ -90,12 +53,22 @@ export default function LoginButton() {
   }
 
   return (
-    <button
-      onClick={handleLogin}
-      className="flex items-center gap-2 px-4 py-2 bg-purple-500/10 text-purple-400 rounded-full hover:bg-purple-500/20 transition-colors"
-    >
-      <FiGithub className="w-4 h-4" />
-      <span>GitHub ile Giriş Yap</span>
-    </button>
+    <div className="flex flex-col gap-3 w-full">
+      <button
+        onClick={handleGitHubLogin}
+        className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-purple-500/10 text-purple-400 rounded-xl hover:bg-purple-500/20 transition-colors"
+      >
+        <FiGithub className="w-5 h-5" />
+        <span>GitHub ile Giriş Yap</span>
+      </button>
+
+      <button
+        onClick={handleGoogleLogin}
+        className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600"
+      >
+        <FcGoogle className="w-5 h-5" />
+        <span>Google ile Giriş Yap</span>
+      </button>
+    </div>
   )
 } 

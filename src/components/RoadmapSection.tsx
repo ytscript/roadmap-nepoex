@@ -151,7 +151,7 @@ export default function RoadmapSection() {
   })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900 overflow-x-hidden">
+    <div id="roadmap" className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Başlık */}
         <div className="text-center mb-12">

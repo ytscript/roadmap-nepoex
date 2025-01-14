@@ -497,10 +497,13 @@ export default function ProfilePage() {
             <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-3">
               <VscGithub className="w-8 h-8" /> GitHub Projeleri
             </h2>
-            {profile?.username ? (
-              <GitHubRepos username={profile.username} />
+            {profile?.github_url ? (
+              <GitHubRepos github_url={profile.github_url} />
             ) : (
-              <p className="text-gray-400">GitHub kullanıcı adı bulunamadı.</p>
+              <div className="text-center p-8 bg-purple-500/10 rounded-xl border border-purple-500/20">
+                <p className="text-gray-400 mb-4">GitHub profilinizi henüz bağlamadınız.</p>
+                <p className="text-sm text-gray-500">Profil düzenleme sayfasından GitHub profilinizi ekleyebilirsiniz.</p>
+              </div>
             )}
           </div>
         )

@@ -16,16 +16,27 @@ interface Repository {
 }
 
 interface GitHubReposProps {
-  username: string
+  github_url: string | null
 }
 
-export default function GitHubRepos({ username }: GitHubReposProps) {
+export default function GitHubRepos({ github_url }: GitHubReposProps) {
   const [repos, setRepos] = useState<Repository[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchRepos = async () => {
       try {
+        if (!github_url) {
+          setLoading(false)
+          return
+        }
+
+        const username = github_url.split('/').pop()
+        if (!username) {
+          setLoading(false)
+          return
+        }
+
         const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
         if (!response.ok) throw new Error('Failed to fetch repos')
         
@@ -38,10 +49,17 @@ export default function GitHubRepos({ username }: GitHubReposProps) {
       }
     }
 
-    if (username) {
-      fetchRepos()
-    }
-  }, [username])
+    fetchRepos()
+  }, [github_url])
+
+  if (!github_url) {
+    return (
+      <div className="text-center p-8 bg-purple-500/10 rounded-xl border border-purple-500/20">
+        <p className="text-gray-400 mb-4">GitHub profilinizi henüz bağlamadınız.</p>
+        <p className="text-sm text-gray-500">Profil sayfanızdan GitHub profilinizi ekleyebilirsiniz.</p>
+      </div>
+    )
+  }
 
   if (loading) {
     return (
@@ -52,6 +70,15 @@ export default function GitHubRepos({ username }: GitHubReposProps) {
             <div className="h-3 bg-white/10 rounded w-1/2" />
           </div>
         ))}
+      </div>
+    )
+  }
+
+  if (repos.length === 0) {
+    return (
+      <div className="text-center p-8 bg-purple-500/10 rounded-xl border border-purple-500/20">
+        <p className="text-gray-400 mb-2">🔍 Bu GitHub URL'ine ait galaktik projeler bulunamadı!</p>
+        <p className="text-sm text-gray-500">Eğer URL'i doğru girdiğinizden eminseniz, belki de tüm projeleriniz gizli olabilir. Yoksa henüz bir projeniz yok mu? Galaktik maceraya başlamak için harika bir zaman! 🚀</p>
       </div>
     )
   }

@@ -136,10 +136,8 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-hidden relative cursor-none home-page bg-[#1a1a2e] text-white">
+    <div className="min-h-screen overflow-hidden relative cursor-none home-page bg-[#1a1a2e] text-white select-none">
       <EasterEgg />
-      <PixelCursor />
-      <StarTrail />
       {/* Synthwave Sun Effect */}
       <div className="fixed bottom-0 left-0 right-0 h-[40vh] bg-gradient-to-t from-purple-600/20 via-orange-400/10 to-transparent" />
 
@@ -180,7 +178,7 @@ export default function HomePage() {
                 className="pixel-btn"
                 onClick={() => window.open('https://youtube.com/@nepoex', '_blank')}
               >
-                <span className="pixel-btn-text">YouTube</span>
+                <span className="pixel-btn-text clickable">YouTube</span>
                 <FiYoutube className="ml-2" />
               </motion.button>
               
